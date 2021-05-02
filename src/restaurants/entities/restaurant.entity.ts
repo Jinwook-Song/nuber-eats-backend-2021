@@ -1,5 +1,5 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
-import { IsBoolean, IsString, Length } from 'class-validator';
+import { IsBoolean, IsOptional, IsString, Length } from 'class-validator';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @InputType({ isAbstract: true }) // 직접 쓰이지 않고, 확장의 의미
@@ -12,16 +12,17 @@ export class Restaurant {
 
   @Field((type) => String) // for graphQL
   @Column() // for TypeORM
-  @IsString()
-  @Length(5)
+  @IsString() // for validation
+  @Length(5) // for validation
   name: string;
 
-  @Field((type) => Boolean)
-  @Column()
+  @Field((type) => Boolean, { nullable: true })
+  @Column({ default: true })
+  @IsOptional()
   @IsBoolean()
   isVegan: boolean;
 
-  @Field((type) => String)
+  @Field((type) => String, { defaultValue: '강남' })
   @Column()
   @IsString()
   address: string;
