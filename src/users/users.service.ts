@@ -37,7 +37,6 @@ export class UsersService {
     email,
     password,
   }: LoginInput): Promise<{ ok: boolean; error?: string; token?: string }> {
-    // make a JWT and give it to the user
     // find the user with the email
     try {
       const user = await this.users.findOne({ email });
@@ -55,6 +54,7 @@ export class UsersService {
           error: 'Wrong password',
         };
       }
+      // make a JWT and give it to the user
       const token = this.jwtService.sign(user.id);
       return {
         ok: true,

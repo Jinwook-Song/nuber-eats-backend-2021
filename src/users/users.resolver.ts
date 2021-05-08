@@ -41,4 +41,8 @@ export class UsersResolver {
       };
     }
   }
+
+  // receive token from User
+  @Query((returns) => User)
+  me() {}
 }
