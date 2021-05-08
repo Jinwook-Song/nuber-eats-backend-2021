@@ -4,11 +4,12 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 @Injectable()
 export class AuthGuard implements CanActivate {
   canActivate(context: ExecutionContext) {
+    // turn nestJS context to gql context
     const gqlContext = GqlExecutionContext.create(context).getContext();
     const user = gqlContext['user'];
     if (!user) {
-      return false;
+      return false; // block request
     }
-    return true;
+    return true; // let the request continue
   }
 }
