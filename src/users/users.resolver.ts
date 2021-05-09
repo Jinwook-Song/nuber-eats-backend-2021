@@ -6,6 +6,7 @@ import {
   CreateAccountInput,
   CreateAccountOutput,
 } from './dtos/create-account.dto';
+import { EditProfileInput, EditProfileOutput } from './dtos/edit-profile.dto';
 import { LoginInput, LoginOutput } from './dtos/login.dto';
 import { UserProfileInput, UserProfileOutput } from './dtos/user-profile.dto';
 import { User } from './entities/user.entity';
@@ -15,6 +16,7 @@ import { UsersService } from './users.service';
 export class UsersResolver {
   constructor(private readonly userService: UsersService) {}
 
+  // Create Account
   @Mutation((returns) => CreateAccountOutput)
   async createAccount(
     @Args('input') createAccountInput: CreateAccountInput,
@@ -29,6 +31,7 @@ export class UsersResolver {
     }
   }
 
+  // Login
   @Mutation((returns) => LoginOutput)
   async login(@Args('input') loginInput: LoginInput): Promise<LoginOutput> {
     try {
@@ -41,7 +44,7 @@ export class UsersResolver {
     }
   }
 
-  // receive token from User
+  // Receive token from User
   @Query((returns) => User)
   @UseGuards(AuthGuard)
   me(@AuthUser() authUser: User) {
@@ -57,8 +60,8 @@ export class UsersResolver {
     try {
       const user = await this.userService.findById(userProfileInput.userId);
       if (!user) {
-        throw Error();
-      } // goto catch
+        throw Error(); // goto catch
+      }
       return {
         ok: true,
         user,
@@ -67,6 +70,26 @@ export class UsersResolver {
       return {
         error: 'User Not Found',
         ok: false,
+      };
+    }
+  }
+
+  // Update user profile
+  @UseGuards(AuthGuard)
+  @Mutation((returns) => EditProfileOutput)
+  async editProfile(
+    @AuthUser() authUser: User,
+    @Args('input') editProfileInput: EditProfileInput,
+  ) {
+    try {
+      await this.userService.editProfile(authUser.id, editProfileInput);
+      return {
+        ok: true,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error,
       };
     }
   }
