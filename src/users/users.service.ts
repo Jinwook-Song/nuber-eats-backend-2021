@@ -12,6 +12,7 @@ import { EditProfileInput, EditProfileOutput } from './dtos/edit-profile.dto';
 import { Verification } from './entities/verification.entity';
 import { UserProfileOutput } from './dtos/user-profile.dto';
 import { VerifyEmailOutput } from './dtos/verify-email.dto';
+import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class UsersService {
@@ -21,6 +22,7 @@ export class UsersService {
     private readonly verifications: Repository<Verification>,
     // app.module의 JwtModule을 users.module에서 import하여 사용가능
     private readonly jwtService: JwtService,
+    private readonly mailService: MailService,
   ) {}
 
   // Create Account
@@ -37,11 +39,12 @@ export class UsersService {
       const user = await this.users.save(
         this.users.create({ email, password, role }),
       );
-      await this.verifications.save(
+      const verification = await this.verifications.save(
         this.verifications.create({
           user,
         }),
       );
+      this.mailService.sendVerificationEmail(user.email, verification.code);
       return { ok: true };
     } catch (e) {
       return { ok: false, error: "Couldn't create account" };
@@ -53,7 +56,7 @@ export class UsersService {
     try {
       const user = await this.users.findOne(
         { email },
-        { select: ['password'] },
+        { select: ['id', 'password'] },
       );
       if (!user) {
         return {
@@ -88,7 +91,7 @@ export class UsersService {
       if (user) {
         return {
           ok: true,
-          user: user,
+          user,
         };
       }
     } catch (error) {
@@ -106,7 +109,10 @@ export class UsersService {
       if (email) {
         user.email = email;
         user.verified = false;
-        await this.verifications.save(this.verifications.create({ user }));
+        const verification = await this.verifications.save(
+          this.verifications.create({ user }),
+        );
+        this.mailService.sendVerificationEmail(user.email, verification.code);
       }
       if (password) {
         user.password = password;
