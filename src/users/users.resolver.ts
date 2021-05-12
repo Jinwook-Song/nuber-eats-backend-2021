@@ -31,10 +31,10 @@ export class UsersResolver {
     return this.usersService.login(loginInput);
   }
 
-  // Receive token from User
+  // My Profile
   @Query((returns) => User)
   @UseGuards(AuthGuard)
-  me(@AuthUser() authUser: User) {
+  myProfile(@AuthUser() authUser: User) {
     return authUser;
   }
 

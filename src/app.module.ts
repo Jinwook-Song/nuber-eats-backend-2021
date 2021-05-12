@@ -47,7 +47,7 @@ import { MailModule } from './mail/mail.module';
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
-      // share
+      // context is called for each request. Resolver can use it
       context: ({ req }) => ({ user: req['user'] }),
     }),
     JwtModule.forRoot({
