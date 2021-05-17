@@ -269,6 +269,63 @@ describe('UserModule (e2e)', () => {
         });
     });
   });
+
+  describe('editProfile', () => {
+    it('should change email', () => {
+      const NEW_EMAIL = 'edit@new.com';
+      return (
+        graphqlRequest(
+          `
+        mutation {
+          editProfile(input: {
+            email:"${NEW_EMAIL}"
+          }) {
+            ok
+            error
+          }
+        }
+        `,
+          jwtToken,
+        )
+          .expect(200)
+          .expect((res) => {
+            const {
+              body: {
+                data: {
+                  editProfile: { ok, error },
+                },
+              },
+            } = res;
+            expect(ok).toBe(true);
+            expect(error).toBe(null);
+          })
+          // test: email has been changed
+          .then(() => {
+            graphqlRequest(
+              `
+            {
+              myProfile {
+                email
+              }
+            }
+            `,
+              jwtToken,
+            )
+              .expect(200)
+              .expect((res) => {
+                const {
+                  body: {
+                    data: {
+                      myProfile: { email },
+                    },
+                  },
+                } = res;
+                expect(email).toBe(NEW_EMAIL);
+              });
+          })
+      );
+    });
+  });
+
   it.todo('verifyEmail');
-  it.todo('editProfile');
 });
