@@ -104,6 +104,7 @@ export class UsersService {
   ): Promise<EditProfileOutput> {
     try {
       const user = await this.users.findOne(userId);
+      // code challenge: email can't duplicated
       if (email) {
         user.email = email;
         user.verified = false;
