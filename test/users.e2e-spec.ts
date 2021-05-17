@@ -226,7 +226,49 @@ describe('UserModule (e2e)', () => {
     });
   });
 
-  it.todo('myProfile');
+  describe('myProfile', () => {
+    it('should find my profile', () => {
+      return graphqlRequest(
+        `
+        {
+          myProfile {
+            email
+          }
+        }
+        `,
+        jwtToken,
+      )
+        .expect(200)
+        .expect((res) => {
+          const {
+            body: {
+              data: {
+                myProfile: { email },
+              },
+            },
+          } = res;
+          expect(email).toBe(testUser.email);
+        });
+    });
+    it('should not allow logged out user', () => {
+      return graphqlRequest(
+        `
+        {
+          myProfile {
+            email
+          }
+        }
+        `,
+      )
+        .expect(200)
+        .expect((res) => {
+          const {
+            body: { errors },
+          } = res;
+          expect(errors[0]['message']).toBe('Forbidden resource');
+        });
+    });
+  });
   it.todo('verifyEmail');
   it.todo('editProfile');
 });
