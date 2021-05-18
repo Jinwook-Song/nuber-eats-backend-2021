@@ -4,7 +4,7 @@ import { CoreEntity } from 'src/common/entities/core.entity';
 import { Column, Entity, OneToMany } from 'typeorm';
 import { Restaurant } from './restaurant.entity';
 
-@InputType({ isAbstract: true }) // 직접 쓰이지 않고, 확장의 의미
+@InputType('CategoryInputType', { isAbstract: true }) // 직접 쓰이지 않고, 확장의 의미
 @ObjectType() // for graphQL
 @Entity() // for TypeORM
 export class Category extends CoreEntity {

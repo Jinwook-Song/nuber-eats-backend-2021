@@ -1,10 +1,11 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { IsString, Length } from 'class-validator';
 import { CoreEntity } from 'src/common/entities/core.entity';
+import { User } from 'src/users/entities/user.entity';
 import { Column, Entity, ManyToOne } from 'typeorm';
 import { Category } from './category.entity';
 
-@InputType({ isAbstract: true }) // 직접 쓰이지 않고, 확장의 의미
+@InputType('RestaurantInputType', { isAbstract: true }) // 직접 쓰이지 않고, 확장의 의미
 @ObjectType() // for graphQL
 @Entity() // for TypeORM
 export class Restaurant extends CoreEntity {
@@ -25,7 +26,21 @@ export class Restaurant extends CoreEntity {
   address: string;
 
   // restaurant can have only one category
-  @Field((type) => Category)
-  @ManyToOne((type) => Category, (category) => category.restaurants)
+  // nullable: true => category를 지워도 restaurant를 지우면 안됌
+  @Field((type) => Category, { nullable: true })
+  @ManyToOne(
+    //
+    (type) => Category,
+    (category) => category.restaurants,
+    { nullable: true, onDelete: 'SET NULL' },
+  )
   category: Category;
+
+  @Field((type) => User)
+  @ManyToOne(
+    //
+    (type) => User,
+    (user) => user.restaurants,
+  )
+  owner: User;
 }
