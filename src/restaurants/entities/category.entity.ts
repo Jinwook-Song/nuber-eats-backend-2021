@@ -9,15 +9,20 @@ import { Restaurant } from './restaurant.entity';
 @Entity() // for TypeORM
 export class Category extends CoreEntity {
   @Field((type) => String) // for graphQL
-  @Column() // for TypeORM
+  @Column({ unique: true }) // for TypeORM
   @IsString() // for validation
   @Length(5) // for validation
   name: string;
 
-  @Field((type) => String)
-  @Column()
+  @Field((type) => String, { nullable: true })
+  @Column({ nullable: true })
   @IsString()
   coverImg: string;
+
+  @Field((type) => String)
+  @Column({ unique: true })
+  @IsString()
+  slug: string;
 
   // category can have many restaurants
   @Field((type) => [Restaurant])
