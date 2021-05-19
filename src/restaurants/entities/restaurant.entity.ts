@@ -41,6 +41,7 @@ export class Restaurant extends CoreEntity {
     //
     (type) => User,
     (user) => user.restaurants,
+    { onDelete: 'CASCADE' },
   )
   owner: User;
 }
