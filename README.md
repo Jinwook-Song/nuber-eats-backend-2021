@@ -39,8 +39,14 @@ The Backend of Nuber Eats Clone
 
 - Search Restaurant
 
-## Dish and Order CRUD
+## Dish CRUD
 
 - Create Dish
 - Edit Dish
 - Delete Dish
+
+## Orders CRUD
+
+- Orders Subscription (Owner, Client, Delivery)
+
+## Payments (CRON)
