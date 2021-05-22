@@ -20,7 +20,7 @@ The Backend of Nuber Eats Clone
 - Edit Profile
 - Verify Email
 
-## Restaurant Model
+## Restaurant Model:
 
 - name
 - category
@@ -45,7 +45,7 @@ The Backend of Nuber Eats Clone
 - Edit Dish
 - Delete Dish
 
-## Orders CRUD
+## Orders CRUD:
 
 - Orders Subscription (Owner, Client, Delivery)
 
