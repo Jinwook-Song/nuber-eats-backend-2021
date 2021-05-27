@@ -26,11 +26,12 @@ export class OrderService {
         error: 'Restaurant not found',
       };
     }
-    try {
-    } catch (error) {
-      return {
-        ok: false,
-      };
-    }
+    const order = await this.orders.save(
+      this.orders.create({
+        customer,
+        restaurant,
+      }),
+    );
+    console.log(order);
   }
 }
