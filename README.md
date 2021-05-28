@@ -54,12 +54,12 @@ The Backend of Nuber Eats Clone
     - listen: newOrder,
     - trigger: createOrder(new Order)
 
-  - Order Status
+  - Pending Pickup Order
 
     - listen: orderUpdate
     - trigger: editOrder(orderUpdate)
 
-  - Pending Pickup Order
+  - Order Status
 
     - listen: orderUpdate
     - trigger: editOrder(orderUpdate)
