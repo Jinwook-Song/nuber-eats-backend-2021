@@ -68,11 +68,11 @@ import { OrderItem } from './orders/entities/order-item.entity';
       autoSchemaFile: true,
       // context is called for each request. Resolver can use it
       context: ({ req, connection }) => {
-        if (req) {
-          return { user: req['user'] };
-        } else {
-          console.log(connection);
-        }
+        const TOKEN_KEY = 'x-jwt';
+        return {
+          // send request header or connection context to guard
+          token: req ? req.headers[TOKEN_KEY] : connection.context[TOKEN_KEY],
+        };
       },
     }),
     JwtModule.forRoot({
