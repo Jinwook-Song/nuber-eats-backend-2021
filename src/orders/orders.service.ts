@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PubSub } from 'graphql-subscriptions';
 import {
   NEW_COOKED_ORDER,
+  NEW_ORDER_UPDATE,
   NEW_PENDING_ORDER,
   PUP_SUB,
 } from 'src/common/common.constants';
@@ -246,14 +247,19 @@ export class OrderService {
         status,
       });
 
-      // trigger
+      const newOrder = { ...order, status };
+      // trigger Pending Pickup Order
       if (user.role === UserRole.Owner) {
         if (status === OrderStatus.Cooked) {
           await this.pubSub.publish(NEW_COOKED_ORDER, {
-            cookedOrders: { ...order, status },
+            cookedOrders: newOrder,
           });
         }
       }
+
+      // trigger Order Update
+      await this.pubSub.publish(NEW_ORDER_UPDATE, { orderUpdates: newOrder });
+
       return {
         ok: true,
       };
