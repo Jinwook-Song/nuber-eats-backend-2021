@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Cron, Interval, SchedulerRegistry } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Restaurant } from 'src/restaurants/entities/restaurant.entity';
 import { User } from 'src/users/entities/user.entity';
@@ -18,7 +17,6 @@ export class PaymentService {
     private readonly payments: Repository<Payment>,
     @InjectRepository(Restaurant)
     private readonly restaurants: Repository<Restaurant>,
-    private schedulerRegistry: SchedulerRegistry,
   ) {}
 
   async createPayment(
@@ -39,6 +37,12 @@ export class PaymentService {
           error: 'You are not allowed to do this.',
         };
       }
+      restaurant.isPromoted = true;
+      const date = new Date();
+      date.setDate(date.getDate() + 7); // promote 7 days
+      restaurant.promotedUntil = date;
+      this.restaurants.save(restaurant); // update restaurant
+
       await this.payments.save(
         this.payments.create({
           transactionId,
@@ -70,15 +74,5 @@ export class PaymentService {
         error: 'Could not load payments',
       };
     }
-  }
-
-  @Cron('30 * * * * *', {
-    name: 'myJob',
-  })
-  checkForPayment() {
-    console.log('test cron');
-    const job = this.schedulerRegistry.getCronJob('myJob');
-    console.log(job);
-    job.stop();
   }
 }

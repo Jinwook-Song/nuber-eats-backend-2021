@@ -177,6 +177,9 @@ export class RestaurantService {
         },
         skip: (page - 1) * 3,
         take: 3,
+        order: {
+          isPromoted: 'DESC',
+        },
       });
       category.restaurants = restaurants;
       const totalResults = await this.countRestaurants(category);
@@ -200,6 +203,9 @@ export class RestaurantService {
       const [restaurants, totalResults] = await this.restaurants.findAndCount({
         skip: (page - 1) * 3,
         take: 3,
+        order: {
+          isPromoted: 'DESC',
+        },
       });
       return {
         ok: true,
