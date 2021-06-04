@@ -50,7 +50,7 @@ export class RestaurantService {
       const newRestaurant = this.restaurants.create(createRestaurantInput);
       newRestaurant.owner = owner;
       const category = await this.categories.getOrCreate(
-        createRestaurantInput.categoryNamge,
+        createRestaurantInput.categoryName,
       );
       newRestaurant.category = category;
       await this.restaurants.save(newRestaurant);
@@ -101,9 +101,9 @@ export class RestaurantService {
         };
       }
       let category: Category = null;
-      if (editRestaurantInput.categoryNamge) {
+      if (editRestaurantInput.categoryName) {
         category = await this.categories.getOrCreate(
-          editRestaurantInput.categoryNamge,
+          editRestaurantInput.categoryName,
         );
       }
       await this.restaurants.save([
