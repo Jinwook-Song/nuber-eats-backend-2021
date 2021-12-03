@@ -217,8 +217,8 @@ export class RestaurantService {
         where: {
           category,
         },
-        skip: (page - 1) * 3,
-        take: 3,
+        skip: (page - 1) * 6,
+        take: 6,
         order: {
           isPromoted: 'DESC',
         },
@@ -229,7 +229,7 @@ export class RestaurantService {
         ok: true,
         restaurants,
         category,
-        totalPages: Math.ceil(totalResults / 3),
+        totalPages: Math.ceil(totalResults / 6),
         totalResults, // Because CategorOutput DTO extends Pagination Output
       };
     } catch (error) {
@@ -243,8 +243,8 @@ export class RestaurantService {
   async allRestaurants({ page }: RestaurantsInput): Promise<RestaurantsOutput> {
     try {
       const [restaurants, totalResults] = await this.restaurants.findAndCount({
-        skip: (page - 1) * 3,
-        take: 3,
+        skip: (page - 1) * 6,
+        take: 6,
         order: {
           isPromoted: 'DESC',
         },
@@ -252,7 +252,7 @@ export class RestaurantService {
       return {
         ok: true,
         results: restaurants,
-        totalPages: Math.ceil(totalResults / 3),
+        totalPages: Math.ceil(totalResults / 6),
         totalResults,
       };
     } catch (error) {
@@ -298,14 +298,14 @@ export class RestaurantService {
           // using SQL to access DB directly
           name: Raw((name) => `${name} ILIKE '%${query}%'`),
         },
-        skip: (page - 1) * 3,
-        take: 3,
+        skip: (page - 1) * 6,
+        take: 6,
       });
       return {
         ok: true,
         restaurants,
         totalResults,
-        totalPages: Math.ceil(totalResults / 3),
+        totalPages: Math.ceil(totalResults / 6),
       };
     } catch {
       return { ok: false, error: 'Could not search for restaurants' };

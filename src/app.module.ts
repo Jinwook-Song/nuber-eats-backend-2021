@@ -48,7 +48,7 @@ import { UploadsModule } from './uploads/uploads.module';
         AWS_ACCESSKEYID: Joi.string().required(),
         AWS_SECRETACCESSKEY: Joi.string().required(),
       }),
-    }),
+    }), 
     TypeOrmModule.forRoot({
       type: 'postgres',
       ...(process.env.DATABASE_URL
