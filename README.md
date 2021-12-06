@@ -134,5 +134,6 @@
 
 ## 🚀 Deployment
 
-- [x] Frontend: [Netlify](https://focused-shirley-1ba214.netlify.app/)
+- [x] Frontend_v1: [Netlify](https://focused-shirley-1ba214.netlify.app/)
+- [x] Frontend_v2: [Netlify](https://optimistic-mestorf-dbd1fd.netlify.app/)
 - [x] Backend: [Heroku](https://nuber-eats-backend-2021.herokuapp.com/graphql)
