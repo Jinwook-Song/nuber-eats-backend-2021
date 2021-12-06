@@ -77,7 +77,8 @@ import { UploadsModule } from './uploads/uploads.module';
       // web Socket
       installSubscriptionHandlers: true,
       autoSchemaFile: true,
-      playground: process.env.NODE_ENV !== 'production',
+      playground: true,
+      // playground: process.env.NODE_ENV !== 'production',
       introspection: true,
       // context is called for each request. Resolver can use it
       context: ({ req, connection }) => {
