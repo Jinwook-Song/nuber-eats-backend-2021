@@ -39,7 +39,7 @@
 - [x] PostgreSQL
 - [x] TypeORM
 - [x] Jest
-- [x] Cypress
+- [ ] Cypress
 - [x] React Testing Library
 - [x] Mailgun
 - [x] Victory
